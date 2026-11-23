@@ -1,0 +1,506 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>مدرب الكتابة</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@500;600&family=Reem+Kufi:wght@500;600;700&display=swap">
+<style>
+/* Concept: a calm workbench. Lesson rail on the right, one big line of text, a physical-layout keyboard below with finger colours. Nothing decorative that is not about hands or keys. */
+:root{
+  --bg:#ECF0F2; --surface:#FFFFFF; --surface2:#F5F7F8; --ink:#12212B; --muted:#53656F; --line:#D2DBE0;
+  --accent:#0A6F8C; --accent-ink:#FFFFFF; --accent-soft:#DAEEF4;
+  --kbbg:#D9E1E6; --key:#FFFFFF; --key-edge:#B4C2CA; --key-ink:#16262F;
+  --hit:#FFC21A; --hit-edge:#C99500; --hit-ink:#241B00;
+  --ok:#0E7F52; --bad:#C6343F; --bad-soft:#FADCDE; --untyped:#74848E;
+  --h-lp:#D6457F; --h-lr:#E8892B; --h-lm:#D8B100; --h-li:#3FA45B;
+  --h-ri:#1FA3B5; --h-rm:#3F72D4; --h-rr:#8A5CD1; --h-rp:#B0643C;
+  --f-ui:'IBM Plex Sans Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+  --f-disp:'Reem Kufi','IBM Plex Sans Arabic','Segoe UI',Tahoma,sans-serif;
+  --f-text:'Noto Naskh Arabic','Traditional Arabic','Amiri',serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D161C; --surface:#15222A; --surface2:#1A2A33; --ink:#E7EEF1; --muted:#93A6B0; --line:#273A44;
+    --accent:#55C6E3; --accent-ink:#04222B; --accent-soft:#12323D;
+    --kbbg:#0A1116; --key:#223540; --key-edge:#0A1217; --key-ink:#E7EEF1;
+    --ok:#4ED69B; --bad:#FF7F88; --bad-soft:#3A1D21; --untyped:#6B7E89;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D161C; --surface:#15222A; --surface2:#1A2A33; --ink:#E7EEF1; --muted:#93A6B0; --line:#273A44;
+  --accent:#55C6E3; --accent-ink:#04222B; --accent-soft:#12323D;
+  --kbbg:#0A1116; --key:#223540; --key-edge:#0A1217; --key-ink:#E7EEF1;
+  --ok:#4ED69B; --bad:#FF7F88; --bad-soft:#3A1D21; --untyped:#6B7E89;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.6}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.app{padding-block:18px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1140px;margin-inline:auto}
+
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:12px}
+.mark{width:40px;height:40px;display:grid;place-items:center;border-radius:10px;background:var(--key);border:1px solid var(--key-edge);border-bottom-width:4px;font:700 22px/1 var(--f-disp);color:var(--accent)}
+.brand .name{font:700 20px/1.2 var(--f-disp)}
+.brand .sub{font-size:13px;color:var(--muted)}
+.kbmode{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.kbmode .lbl{font-size:13px;color:var(--muted);margin-inline-end:4px}
+.kbmode button{padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-size:14px}
+.kbmode button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+
+.notice{margin-bottom:18px;padding:12px 14px;border-radius:10px;background:var(--accent-soft);border:1px solid var(--line);font-size:14px}
+
+/* layout */
+.layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:28px;align-items:start}
+.lessons{display:flex;flex-direction:column;gap:2px;position:sticky;top:12px}
+.grp{font:600 12px/1.4 var(--f-ui);color:var(--muted);margin:14px 10px 4px}
+.grp:first-child{margin-top:0}
+.lesson{display:grid;grid-template-columns:26px 1fr auto;align-items:center;gap:10px;width:100%;text-align:start;padding:7px 10px;border-radius:10px;border:1px solid transparent;background:transparent;cursor:pointer;font-size:14px}
+.lesson:hover{background:var(--surface)}
+.lesson .n{width:26px;height:26px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);font-size:12px;font-variant-numeric:tabular-nums;color:var(--muted)}
+.lesson .st{font-size:11px;letter-spacing:1px;color:var(--hit-edge)}
+.lesson.cur{background:var(--surface);border-color:var(--line);font-weight:600}
+.lesson.cur .n{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+
+/* stage */
+.stage{min-width:0;display:flex;flex-direction:column;gap:16px}
+.kicker{font-size:13px;color:var(--muted)}
+.head h1{margin:2px 0 6px;font:700 clamp(24px,3vw,32px)/1.25 var(--f-disp);text-wrap:balance}
+.head .tip{margin:0;max-width:62ch;color:var(--muted);font-size:15px}
+
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.stat{padding:10px 16px;min-width:0}
+.stat+.stat{border-inline-start:1px solid var(--line)}
+.stat .k{font-size:12px;color:var(--muted)}
+.stat .v{font:600 24px/1.3 var(--f-disp);font-variant-numeric:tabular-nums}
+.stat .u{font:400 12px var(--f-ui);color:var(--muted);margin-inline-start:4px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 26px 18px;transition:border-color .15s}
+.card.err{border-color:var(--bad)}
+.target{font-family:var(--f-text);font-weight:500;font-size:clamp(26px,3.2vw + 8px,40px);line-height:2.15;white-space:pre-wrap;overflow-wrap:anywhere;min-height:2.15em;user-select:none}
+.target .c{color:var(--untyped)}
+.target .c.ok{color:var(--ink)}
+.target .c.cur{background:var(--hit);color:var(--hit-ink);border-radius:5px}
+.target .c.bad{background:var(--bad);color:#fff;border-radius:5px}
+.bar{height:4px;border-radius:2px;background:var(--line);overflow:hidden;margin-top:14px}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .12s}
+@media (prefers-reduced-motion: no-preference){
+  .card.shake{animation:shake .18s linear}
+}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+.status{font-size:14px;color:var(--muted);min-height:1.6em;margin-top:-6px}
+
+/* result */
+.result{background:var(--surface);border:1px solid var(--accent);border-radius:14px;padding:20px 24px;display:flex;flex-direction:column;gap:12px}
+.result .stars{font-size:26px;letter-spacing:4px;color:var(--hit-edge);line-height:1}
+.result h2{margin:0;font:700 24px/1.3 var(--f-disp)}
+.result p{margin:0;color:var(--muted)}
+.rstats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0}
+.rstats div{background:var(--surface2);border-radius:10px;padding:8px 12px}
+.rstats dt{font-size:12px;color:var(--muted)}
+.rstats dd{margin:0;font:600 22px/1.3 var(--f-disp);font-variant-numeric:tabular-nums}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn{padding:9px 18px;border-radius:10px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-weight:500}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.keyhint{font-size:13px;color:var(--muted)}
+
+/* keyboard block */
+.kbwrap{display:flex;flex-direction:column;gap:12px}
+.nextline{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:15px;min-height:48px}
+.nlabel{color:var(--muted)}
+.nchip{min-width:48px;height:48px;padding:0 12px;display:grid;place-items:center;border-radius:10px;font:600 28px/1 var(--f-disp);color:var(--key-ink);background:color-mix(in srgb,var(--h,var(--key)) 24%,var(--key));border:1px solid var(--key-edge);border-bottom-width:4px}
+.nchip.word{font-size:16px}
+.nfinger{display:inline-flex;align-items:center;gap:8px}
+.dot{width:11px;height:11px;border-radius:50%;background:var(--h)}
+.nshift{padding:3px 9px;border-radius:6px;background:var(--ink);color:var(--surface);font-size:13px}
+.kbinner{background:var(--kbbg);border-radius:16px;padding:14px}
+.kb{container-type:inline-size;display:flex;flex-direction:column;gap:5px}
+.row{display:grid;grid-template-columns:repeat(26,minmax(0,1fr));gap:5px}
+.sp{min-width:0}
+.key{position:relative;grid-column:span 2;aspect-ratio:1/1;min-width:0;border-radius:8px;border:1px solid var(--key-edge);box-shadow:0 3px 0 var(--key-edge);background:color-mix(in srgb,var(--h,var(--key)) 20%,var(--key));color:var(--key-ink);display:grid;place-items:center;transition:transform .05s,background-color .1s}
+.key .ar{font:600 clamp(13px,3.7cqw,30px)/1 var(--f-disp)}
+.key .lat{position:absolute;inset-inline-start:auto;left:6%;bottom:4%;font:500 clamp(7px,1.5cqw,12px)/1 var(--f-ui);opacity:.55}
+.key .sh{position:absolute;right:8%;top:6%;font:500 clamp(8px,1.9cqw,15px)/1 var(--f-disp);opacity:.7}
+.key.shift{grid-column:span 3;aspect-ratio:auto;font:500 clamp(8px,1.8cqw,13px)/1 var(--f-ui)}
+.key.space{grid-column:span 12;aspect-ratio:auto;height:100%;min-height:36px;font:500 clamp(9px,1.9cqw,14px)/1 var(--f-ui)}
+.key.home::after{content:"";position:absolute;bottom:14%;left:50%;width:30%;height:3px;margin-left:-15%;border-radius:2px;background:var(--key-ink);opacity:.45}
+.key.down{transform:translateY(2px);box-shadow:0 1px 0 var(--key-edge)}
+.key.next{background:var(--hit);border-color:var(--hit-edge);box-shadow:0 3px 0 var(--hit-edge),0 0 0 4px color-mix(in srgb,var(--hit) 40%,transparent);color:var(--hit-ink)}
+.key.wrong{background:var(--bad);border-color:var(--bad);color:#fff}
+.kbwrap[data-mode="blank"] .key .ar,.kbwrap[data-mode="blank"] .key .sh,.kbwrap[data-mode="blank"] .key .lat{visibility:hidden}
+.kbwrap[data-mode="off"] .kbinner,.kbwrap[data-mode="off"] .legend,.kbwrap[data-mode="off"] .nextline{display:none}
+.offnote{display:none;font-size:14px;color:var(--muted)}
+.kbwrap[data-mode="off"] .offnote{display:block}
+.legend{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.hand{display:flex;flex-direction:column;align-items:center;gap:6px}
+.hand .chips{display:flex;gap:10px}
+.lg{display:inline-flex;align-items:center;gap:5px}
+.lg i{width:10px;height:10px;border-radius:50%;background:var(--h)}
+.foot{font-size:13px;color:var(--muted);margin:0;max-width:70ch}
+
+.f-LP{--h:var(--h-lp)} .f-LR{--h:var(--h-lr)} .f-LM{--h:var(--h-lm)} .f-LI{--h:var(--h-li)}
+.f-RI{--h:var(--h-ri)} .f-RM{--h:var(--h-rm)} .f-RR{--h:var(--h-rr)} .f-RP{--h:var(--h-rp)} .f-TH{--h:var(--muted)}
+
+@media (max-width:860px){
+  .layout{grid-template-columns:minmax(0,1fr);gap:18px}
+  .lessons{position:static;flex-direction:row;flex-wrap:wrap;gap:6px}
+  .grp{flex-basis:100%;margin:6px 0 0}
+  .lesson{width:auto;grid-template-columns:auto;padding:0;border:0}
+  .lesson .name,.lesson .st{display:none}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat:nth-child(3){border-inline-start:0}
+  .stat:nth-child(n+3){border-top:1px solid var(--line)}
+  .rstats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .card{padding:16px 16px 14px}
+}
+</style>
+
+<div class="app" dir="rtl" lang="ar">
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">ض</span>
+      <div><div class="name">مدرب الكتابة</div><div class="sub">الطباعة العربية باللمس</div></div>
+    </div>
+    <div class="kbmode" role="group" aria-label="شكل لوحة المفاتيح على الشاشة">
+      <span class="lbl">لوحة المفاتيح</span>
+      <button type="button" data-mode="full" aria-pressed="true">بالحروف</button>
+      <button type="button" data-mode="blank" aria-pressed="false">بلا حروف</button>
+      <button type="button" data-mode="off" aria-pressed="false">مخفية</button>
+    </div>
+  </header>
+
+  <div class="notice" id="notice" hidden>هذا التمرين يحتاج لوحة مفاتيح حقيقية. افتحه من حاسوب أو لابتوب، فالكتابة باللمس لا معنى لها على شاشة الموبايل.</div>
+
+  <div class="layout">
+    <nav class="lessons" id="lessons" aria-label="الدروس"></nav>
+
+    <main class="stage">
+      <section class="head">
+        <div class="kicker" id="kicker"></div>
+        <h1 id="ltitle"></h1>
+        <p class="tip" id="ltip"></p>
+      </section>
+
+      <div class="stats" aria-live="off">
+        <div class="stat"><div class="k">السرعة</div><div class="v"><span id="sWpm">0</span><span class="u">كلمة/د</span></div></div>
+        <div class="stat"><div class="k">الدقة</div><div class="v"><span id="sAcc">100</span><span class="u">%</span></div></div>
+        <div class="stat"><div class="k">الوقت</div><div class="v" id="sTime">0:00</div></div>
+        <div class="stat"><div class="k">الأخطاء</div><div class="v" id="sErr">0</div></div>
+      </div>
+
+      <div class="card" id="card">
+        <div class="target" id="target"></div>
+        <div class="bar"><i id="bar"></i></div>
+      </div>
+      <div class="status" id="status"></div>
+
+      <section class="result" id="result" hidden>
+        <div class="stars" id="rStars" aria-hidden="true"></div>
+        <h2 id="rTitle"></h2>
+        <p id="rMsg"></p>
+        <dl class="rstats">
+          <div><dt>السرعة</dt><dd id="rWpm"></dd></div>
+          <div><dt>الدقة</dt><dd id="rAcc"></dd></div>
+          <div><dt>الوقت</dt><dd id="rTime"></dd></div>
+          <div><dt>الأخطاء</dt><dd id="rErr"></dd></div>
+        </dl>
+        <div class="actions">
+          <button type="button" class="btn" id="again">إعادة الدرس</button>
+          <button type="button" class="btn primary" id="next">الدرس التالي</button>
+        </div>
+        <div class="keyhint">اضغط Enter للانتقال، أو Esc للإعادة.</div>
+      </section>
+
+      <section class="kbwrap" id="kbwrap" data-mode="full">
+        <div class="nextline" id="nextline"></div>
+        <div class="kbinner"><div class="kb" id="kb" dir="ltr"></div></div>
+        <div class="legend" dir="ltr">
+          <div class="hand"><span>اليد اليسرى</span><div class="chips">
+            <span class="lg f-LP"><i></i>خنصر</span><span class="lg f-LR"><i></i>بنصر</span><span class="lg f-LM"><i></i>وسطى</span><span class="lg f-LI"><i></i>سبابة</span>
+          </div></div>
+          <div class="hand"><span>اليد اليمنى</span><div class="chips">
+            <span class="lg f-RI"><i></i>سبابة</span><span class="lg f-RM"><i></i>وسطى</span><span class="lg f-RR"><i></i>بنصر</span><span class="lg f-RP"><i></i>خنصر</span>
+          </div></div>
+        </div>
+        <div class="offnote">اللوحة مخفية. اعتمد على أصابعك فقط، وسيظهر لك الحرف المطلوب في الأعلى.</div>
+        <p class="foot">الصفحة تقرأ مكان المفتاح على لوحتك، فلا تحتاج إلى تغيير لغة الكيبورد إلى العربية. الخط الصغير على ب وت يطابق النتوء على مفتاحي F وJ. الحرف ذ والأرقام في الصف العلوي غير مشمولة في هذه الدروس.</p>
+      </section>
+    </main>
+  </div>
+</div>
+</div>
+
+<script>
+(function(){
+/*DATA-START*/
+var ROWS=[
+ [['KeyQ','Q','ض',''],['KeyW','W','ص',''],['KeyE','E','ث',''],['KeyR','R','ق',''],['KeyT','T','ف',''],['KeyY','Y','غ','إ'],['KeyU','U','ع',''],['KeyI','I','ه',''],['KeyO','O','خ',''],['KeyP','P','ح',''],['BracketLeft','[','ج',''],['BracketRight',']','د','']],
+ [['KeyA','A','ش',''],['KeyS','S','س',''],['KeyD','D','ي',''],['KeyF','F','ب',''],['KeyG','G','ل',''],['KeyH','H','ا','أ'],['KeyJ','J','ت',''],['KeyK','K','ن','،'],['KeyL','L','م',''],['Semicolon',';','ك',''],['Quote',"'",'ط','']],
+ [['KeyZ','Z','ئ',''],['KeyX','X','ء',''],['KeyC','C','ؤ',''],['KeyV','V','ر',''],['KeyB','B','لا',''],['KeyN','N','ى','آ'],['KeyM','M','ة',''],['Comma',',','و',''],['Period','.','ز','.'],['Slash','/','ظ','؟']]
+];
+var FINGER={KeyQ:'LP',KeyA:'LP',KeyZ:'LP',KeyW:'LR',KeyS:'LR',KeyX:'LR',KeyE:'LM',KeyD:'LM',KeyC:'LM',
+ KeyR:'LI',KeyF:'LI',KeyV:'LI',KeyT:'LI',KeyG:'LI',KeyB:'LI',KeyY:'RI',KeyH:'RI',KeyN:'RI',KeyU:'RI',KeyJ:'RI',KeyM:'RI',
+ KeyI:'RM',KeyK:'RM',Comma:'RM',KeyO:'RR',KeyL:'RR',Period:'RR',KeyP:'RP',Semicolon:'RP',Slash:'RP',
+ BracketLeft:'RP',BracketRight:'RP',Quote:'RP',Space:'TH',ShiftLeft:'LP',ShiftRight:'RP'};
+var CH={};
+ROWS.forEach(function(r){r.forEach(function(k){
+  var n=k[2],s=k[3];
+  if(n.length===1)CH[n]={code:k[0],shift:false};
+  if(s)CH[s]={code:k[0],shift:true};
+});});
+CH[' ']={code:'Space',shift:false};
+
+function rnd(n){return Math.floor(Math.random()*n);}
+function pick(a,n){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=rnd(i+1),t=b[i];b[i]=b[j];b[j]=t;}return b.slice(0,n);}
+function drill(nw,base,words,min,max){
+  var pool=(nw+nw+nw+base).split(''),out=[];
+  for(var w=0;w<words;w++){
+    var len=min+rnd(max-min+1),s='';
+    for(var k=0;k<len;k++){var c,t=0;do{c=pool[rnd(pool.length)];t++;}while(t<8&&s.slice(-2)===c+c);s+=c;}
+    out.push(s);
+  }
+  nw.split('').forEach(function(c){
+    if(out.join('').indexOf(c)<0){var j=rnd(out.length);out[j]=out[j].slice(0,-1)+c;}
+  });
+  return out.join(' ');
+}
+var HOME='شسيبلاتنمكط';
+var W1='كتاب قلم بيت باب ولد بنت شمس قمر ماء نور خبز لبن سمك ورد نهر بحر جبل طريق سيارة مدرسة مكتب حاسوب شاشة مفتاح شجرة زهرة كرسي طاولة حليب عسل تفاح برتقال موز عنب رمان خيار طماطم بطاطس جزر'.split(' ');
+var W2='مكتبة معلومات الكتابة الحاسوب تمرين سرعة دقة صديق جميل سعيد حديقة مستشفى مطعم شارع مدينة قطار طائرة مسافر رحلة معلم طالب جامعة مهندس طبيب ممرضة مزارع تاجر ميدان مهارة صبر نجاح'.split(' ');
+var S1=['القمر جميل في الليل','نحب القراءة كل يوم','الشمس تشرق من الشرق','العلم نور والجهل ظلام','نشرب الشاي مع الصديق','سافر القطار نحو المدينة','فتح الولد باب البيت','يجري النهر بين الجبال','ينمو الورد في الحديقة','زرع الفلاح القمح في الحقل'];
+var S2=['الصبر مفتاح الفرج','العلم في الصغر كالنقش على الحجر','من جد وجد ومن زرع حصد','خير الكلام ما قل ودل','الجار قبل الدار','الصديق وقت الضيق','العقل السليم في الجسم السليم','من سار على الدرب وصل','القناعة كنز لا يفنى','درهم وقاية خير من قنطار علاج','لكل مجتهد نصيب'];
+var S3=['ضع يديك على صف الارتكاز','ركز نظرك على الشاشة','الدقة قبل السرعة','كل يوم عشر دقائق تكفي','التكرار يصنع المهارة','اضغط كل مفتاح بهدوء','اكتب كل يوم ولو قليلا','تمرن كل يوم وستصبح سريعا','لوحة المفاتيح صديقك','ستكتب بسرعة كبيرة'];
+var S4=['أحمد يحب الكتابة، ويتعلم كل يوم.','هل تحب القراءة؟ نعم، أحبها كثيرا.','إن مع العسر يسرا.','آمل أن تنجح في الاختبار.','أتعلم الكتابة بأصابع يدي العشرة.','إلى اللقاء، وشكرا لك.'];
+var ALL='ضصثقفغعهخحجدشسيبلاتنمكطئءؤرىةوزظ';
+var LESSONS=[
+ {g:'الحروف',t:'اليد اليسرى',tip:'ضع الخنصر على ش، والبنصر على س، والوسطى على ي، والسبابة على ب. ستحس السبابة بنتوء صغير على ب.',gen:function(){return drill('شسيب','',16,2,4);}},
+ {g:'الحروف',t:'اليد اليمنى',tip:'ضع السبابة على ت (عليها نتوء)، والوسطى على ن، والبنصر على م، والخنصر على ك.',gen:function(){return drill('تنمك','',16,2,4);}},
+ {g:'الحروف',t:'صف الارتكاز كاملا',tip:'السبابة اليسرى تمتد إلى ل واليمنى إلى ا، ثم يعود كل إصبع إلى مكانه. الخنصر الأيمن يضغط ط.',gen:function(){return drill('لاط','شسيبتنمك',18,2,5);}},
+ {g:'الحروف',t:'الصف العلوي: يسار',tip:'ارفع أصابع اليد اليسرى إلى الصف العلوي وأعدها إلى صف الارتكاز بعد كل حرف.',gen:function(){return drill('ضصثقف',HOME,18,2,5);}},
+ {g:'الحروف',t:'الصف العلوي: يمين',tip:'اليد اليمنى تصعد إلى الصف العلوي. الخنصر الأيمن مسؤول عن ح وج ود.',gen:function(){return drill('غعهخحجد',HOME,18,2,5);}},
+ {g:'الحروف',t:'الصف السفلي: يسار',tip:'اليد اليسرى تنزل إلى الصف السفلي: ئ بالخنصر، ء بالبنصر، ؤ بالوسطى، ر بالسبابة.',gen:function(){return drill('ئءؤر',HOME,18,2,5);}},
+ {g:'الحروف',t:'الصف السفلي: يمين',tip:'ى وة بالسبابة اليمنى، و بالوسطى، ز بالبنصر، ظ بالخنصر.',gen:function(){return drill('ىةوزظ',HOME,18,2,5);}},
+ {g:'الحروف',t:'كل الحروف معا',tip:'كل الحروف في تمرين واحد. حافظ على الدقة، والسرعة ستأتي وحدها.',gen:function(){return drill(ALL,'',20,3,5);}},
+ {g:'كلمات',t:'كلمات قصيرة',tip:'كلمات من الحياة اليومية. اقرأ الكلمة بعينيك وأصابعك تكتب.',gen:function(){return pick(W1,14).join(' ');}},
+ {g:'كلمات',t:'كلمات أطول',tip:'انتبه للحرف التالي فقط، ولا تنظر إلى يديك.',gen:function(){return pick(W2,12).join(' ');}},
+ {g:'جمل',t:'جمل قصيرة',tip:'اكتب الجملة كاملة بإيقاع ثابت. المسافة بالإبهام.',gen:function(){return pick(S1,4).join(' ');}},
+ {g:'جمل',t:'أمثال وحكم',tip:'جمل مألوفة تساعد عينيك على السبق، وأصابعك تتبع.',gen:function(){return pick(S2,3).join(' ');}},
+ {g:'جمل',t:'جمل عن التدريب',tip:'نصائح قصيرة وأنت تتدرب عليها.',gen:function(){return pick(S3,4).join(' ');}},
+ {g:'الشيفت',t:'الهمزات أ إ آ',tip:'الأحرف أ وإ وآ تكتب بالسبابة اليمنى مع Shift الأيسر. اضغط Shift بالخنصر الأيسر، ثم الحرف، ثم ارفعهما معا.',gen:function(){return drill('أإآ','ابتنمله',14,2,4);}},
+ {g:'الشيفت',t:'همزات وعلامات ترقيم',tip:'الفاصلة والنقطة وعلامة الاستفهام مع Shift الأيسر أيضا، لأنها كلها على اليد اليمنى.',gen:function(){return pick(S4,3).join(' ');}}
+];
+/*DATA-END*/
+
+var $=function(s){return document.querySelector(s);};
+function el(t,c,txt){var e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e;}
+var FNAME={LP:'الخنصر الأيسر',LR:'البنصر الأيسر',LM:'الوسطى اليسرى',LI:'السبابة اليسرى',RI:'السبابة اليمنى',RM:'الوسطى اليمنى',RR:'البنصر الأيمن',RP:'الخنصر الأيمن',TH:'الإبهام'};
+
+var prog={},mode='full';
+try{prog=JSON.parse(localStorage.getItem('ar-typing-v1')||'{}')||{};}catch(e){prog={};}
+try{var m=localStorage.getItem('ar-typing-mode');if(m==='full'||m==='blank'||m==='off')mode=m;}catch(e){}
+function saveProg(){try{localStorage.setItem('ar-typing-v1',JSON.stringify(prog));}catch(e){}}
+
+var cur=0,text='',spans=[],pos=0,hits=0,errors=0,started=false,t0=0,done=false,passed=false,timer=null;
+var keyEls={};
+
+/* keyboard */
+function sp(n){var d=el('div','sp');d.style.gridColumn='span '+n;return d;}
+function keyEl(k){
+  var d=el('div','key f-'+FINGER[k[0]]);d.dataset.code=k[0];
+  if(k[0]==='KeyF'||k[0]==='KeyJ')d.classList.add('home');
+  if(k[3])d.appendChild(el('span','sh',k[3]));
+  d.appendChild(el('span','ar',k[2]));
+  d.appendChild(el('span','lat',k[1]));
+  keyEls[k[0]]=d;return d;
+}
+function shiftKey(code){
+  var d=el('div','key shift f-'+FINGER[code],'Shift');d.dataset.code=code;keyEls[code]=d;return d;
+}
+function buildKB(){
+  var kb=$('#kb');kb.innerHTML='';
+  ROWS.forEach(function(row,ri){
+    var r=el('div','row');
+    if(ri<2)r.appendChild(sp(ri===0?1:2));
+    if(ri===2)r.appendChild(shiftKey('ShiftLeft'));
+    row.forEach(function(k){r.appendChild(keyEl(k));});
+    if(ri===2)r.appendChild(shiftKey('ShiftRight'));
+    kb.appendChild(r);
+  });
+  var r=el('div','row');r.appendChild(sp(7));
+  var s=el('div','key space f-TH','مسافة');s.dataset.code='Space';keyEls.Space=s;
+  r.appendChild(s);kb.appendChild(r);
+}
+
+/* lessons list */
+function buildLessons(){
+  var nav=$('#lessons');nav.innerHTML='';var g=null;
+  LESSONS.forEach(function(L,i){
+    if(L.g!==g){g=L.g;nav.appendChild(el('h2','grp',g));}
+    var b=el('button','lesson');b.type='button';b.dataset.i=i;
+    b.appendChild(el('span','n',String(i+1)));
+    b.appendChild(el('span','name',L.t));
+    b.appendChild(el('span','st',''));
+    b.setAttribute('aria-label','الدرس '+(i+1)+': '+L.t);
+    b.addEventListener('click',function(){loadLesson(i);b.blur();});
+    nav.appendChild(b);
+  });
+}
+function refreshLessons(){
+  document.querySelectorAll('.lesson').forEach(function(b){
+    var i=+b.dataset.i,p=prog['l'+i];
+    b.classList.toggle('cur',i===cur);
+    if(i===cur)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current');
+    b.querySelector('.st').textContent=p&&p.stars?'★'.repeat(p.stars):'';
+  });
+}
+
+/* lesson flow */
+function loadLesson(i){
+  cur=i;var L=LESSONS[i];
+  text=L.gen();pos=0;hits=0;errors=0;started=false;done=false;t0=0;
+  clearInterval(timer);timer=null;
+  $('#kicker').textContent='الدرس '+(i+1)+' من '+LESSONS.length+' · '+L.g;
+  $('#ltitle').textContent=L.t;
+  $('#ltip').textContent=L.tip;
+  var t=$('#target');t.innerHTML='';spans=[];
+  for(var k=0;k<text.length;k++){var s=el('span','c',text[k]);t.appendChild(s);spans.push(s);}
+  $('#result').hidden=true;
+  $('#card').classList.remove('err');
+  renderCursor();updateStats();setStatus();refreshLessons();
+}
+function renderCursor(){
+  spans.forEach(function(s,k){s.classList.toggle('cur',k===pos&&!done);});
+  $('#bar').style.width=(text.length?pos/text.length*100:0)+'%';
+  Object.keys(keyEls).forEach(function(c){keyEls[c].classList.remove('next');});
+  var nl=$('#nextline');nl.innerHTML='';
+  if(done||pos>=text.length)return;
+  var ch=text[pos],info=CH[ch];
+  if(!info)return;
+  var f=FINGER[info.code];
+  keyEls[info.code].classList.add('next');
+  var chip=el('span','nchip f-'+f,ch===' '?'مسافة':ch);if(ch===' ')chip.classList.add('word');
+  var fin=el('span','nfinger f-'+f);fin.appendChild(el('i','dot'));fin.appendChild(document.createTextNode(FNAME[f]));
+  nl.appendChild(el('span','nlabel','الحرف التالي'));nl.appendChild(chip);nl.appendChild(fin);
+  if(info.shift){
+    var left=FINGER[info.code].charAt(0)==='L';
+    keyEls[left?'ShiftRight':'ShiftLeft'].classList.add('next');
+    nl.appendChild(el('span','nshift','مع Shift '+(left?'الأيمن':'الأيسر')));
+  }
+}
+function fmt(s){s=Math.floor(s);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+function elapsed(){return started?((done?tEnd:Date.now())-t0)/1000:0;}
+var tEnd=0;
+function calc(){
+  var el_=elapsed(),acc=hits+errors===0?100:Math.round(hits/(hits+errors)*100);
+  var wpm=el_>1.5?Math.round((pos/5)/(el_/60)):0;
+  return {t:el_,acc:acc,wpm:wpm};
+}
+function updateStats(){
+  var c=calc();
+  $('#sWpm').textContent=c.wpm;$('#sAcc').textContent=c.acc;$('#sTime').textContent=fmt(c.t);$('#sErr').textContent=errors;
+}
+function setStatus(){
+  var s='';
+  if(done)s='';
+  else if(!document.hasFocus())s='انقر داخل الصفحة أولا، ثم ابدأ الكتابة.';
+  else if(!started)s='ابدأ الكتابة. يبدأ الوقت مع أول ضغطة.';
+  else s='Esc لبدء الدرس من جديد.';
+  $('#status').textContent=s;
+}
+function starsFor(acc){return acc>=98?3:acc>=93?2:acc>=85?1:0;}
+function finish(){
+  done=true;tEnd=Date.now();clearInterval(timer);timer=null;
+  renderCursor();
+  var c=calc(),st=starsFor(c.acc);passed=st>0;
+  var old=prog['l'+cur]||{stars:0,wpm:0};
+  prog['l'+cur]={stars:Math.max(old.stars,st),wpm:Math.max(old.wpm,c.wpm)};saveProg();
+  $('#rStars').textContent=st?'★'.repeat(st)+'☆'.repeat(3-st):'';
+  $('#rTitle').textContent=st===3?'ممتاز':st===2?'جيد جدا':st===1?'أحسنت':'حاول مرة أخرى';
+  $('#rMsg').textContent=st===3?'أصابعك حفظت أماكن الحروف. انتقل للدرس التالي.':
+    st===2?'قريب جدا. كرر الدرس مرة لترفع الدقة.':
+    st===1?'جيد. قلل الأخطاء قبل أن تزيد السرعة.':
+    'أخطاؤك كثيرة هذه المرة. أبطئ قليلا، فالدقة أهم من السرعة الآن.';
+  $('#rWpm').textContent=c.wpm;$('#rAcc').textContent=c.acc+'%';$('#rTime').textContent=fmt(c.t);$('#rErr').textContent=errors;
+  var last=cur===LESSONS.length-1;
+  $('#next').textContent=last?'العودة للدرس الأول':'الدرس التالي';
+  $('#next').className='btn'+(passed?' primary':'');
+  $('#result').hidden=false;
+  updateStats();setStatus();refreshLessons();
+  try{$('#result').scrollIntoView({block:'nearest'});}catch(e){}
+}
+function goNext(){loadLesson(cur===LESSONS.length-1?0:cur+1);}
+
+/* input */
+function flashWrong(code){
+  var k=keyEls[code];
+  if(k){k.classList.add('wrong');setTimeout(function(){k.classList.remove('wrong');},220);}
+  var s=spans[pos];
+  if(s){s.classList.add('bad');setTimeout(function(){s.classList.remove('bad');},200);}
+  var c=$('#card');c.classList.add('err');
+  c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');
+  setTimeout(function(){c.classList.remove('err');},250);
+}
+function startTimer(){
+  started=true;t0=Date.now();
+  timer=setInterval(updateStats,250);setStatus();
+}
+window.addEventListener('keydown',function(e){
+  if(e.isComposing)return;
+  if(e.key==='Shift'){var sk=keyEls[e.code];if(sk)sk.classList.add('down');return;}
+  if(e.ctrlKey||e.metaKey||e.altKey)return;
+  if(e.key==='Escape'){loadLesson(cur);return;}
+  if(done){
+    if(e.key==='Enter'){e.preventDefault();if(passed)goNext();else loadLesson(cur);}
+    return;
+  }
+  if(e.key.length!==1)return;
+  e.preventDefault();
+  if(e.repeat)return;
+  var dk=keyEls[e.code];if(dk)dk.classList.add('down');
+  if(!started)startTimer();
+  var want=text[pos],info=CH[want],ok=false,adv=1;
+  if(info&&e.code===info.code&&(info.code==='Space'||e.shiftKey===info.shift))ok=true;
+  else if(e.code==='KeyB'&&!e.shiftKey&&text.substr(pos,2)==='لا'){ok=true;adv=2;}
+  if(ok){
+    for(var k=0;k<adv;k++)spans[pos+k].classList.add('ok');
+    pos+=adv;hits++;
+    renderCursor();updateStats();
+    if(pos>=text.length)finish();
+  }else{
+    errors++;flashWrong(e.code);updateStats();
+  }
+});
+window.addEventListener('keyup',function(e){var k=keyEls[e.code];if(k)k.classList.remove('down');});
+window.addEventListener('blur',function(){Object.keys(keyEls).forEach(function(c){keyEls[c].classList.remove('down');});setStatus();});
+window.addEventListener('focus',setStatus);
+document.addEventListener('mousedown',function(){setTimeout(setStatus,0);});
+
+/* controls */
+function applyMode(){
+  $('#kbwrap').dataset.mode=mode;
+  document.querySelectorAll('.kbmode button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.mode===mode?'true':'false');});
+}
+document.querySelectorAll('.kbmode button').forEach(function(b){
+  b.addEventListener('click',function(){
+    mode=b.dataset.mode;applyMode();b.blur();
+    try{localStorage.setItem('ar-typing-mode',mode);}catch(e){}
+  });
+});
+$('#again').addEventListener('click',function(){loadLesson(cur);});
+$('#next').addEventListener('click',goNext);
+
+try{if(window.matchMedia&&matchMedia('(pointer: coarse)').matches)$('#notice').hidden=false;}catch(e){}
+
+buildKB();buildLessons();applyMode();
+var first=LESSONS.length-1;
+for(var q=0;q<LESSONS.length;q++){var pp=prog['l'+q];if(!pp||!pp.stars){first=q;break;}}
+loadLesson(first);
+})();
+</script>
+
+</body></html>
